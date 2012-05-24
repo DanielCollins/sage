@@ -35,7 +35,7 @@ struct Value *builtin_bind(struct Value *argument, struct Value **env)
   value = ((struct Pair*)value->value)->car;
   evaluate(&value, env);
   bind(name, value, *env);
-  return *env;
+  return value;
 }
 
 struct Value *builtin_extend(struct Value *argument, struct Value **env)
@@ -48,7 +48,7 @@ struct Value *builtin_extend(struct Value *argument, struct Value **env)
   value = ((struct Pair*)value->value)->car;
   evaluate(&value, env);
   *env = extend(name, value, *env);
-  return *env;
+  return value;
 }
 
 struct Value *builtin_env(struct Value *argument, struct Value **env)
