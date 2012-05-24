@@ -14,7 +14,7 @@ void print_value(struct Value *v)
       print_symbol((Symbol) v->value);
       return;
     case ENVIROMENT:
-      print_enviroment(v);
+      print_enviroment((struct Frame*) v->value);
       return;
     case BOOLEAN:
       print_boolean((int*) v->value);

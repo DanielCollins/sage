@@ -77,7 +77,6 @@ void evaluate(struct Value **exp, struct Value **env)
           case EXTERNAL:
             *exp = ((struct External*)operator->value)->
                      implementation(((struct Pair*)(*exp)->value)->cdr, env);
-            ++(**exp).references;
             return;
           default:
             fprintf(stderr, "non operative\n");

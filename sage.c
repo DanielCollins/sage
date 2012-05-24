@@ -54,8 +54,10 @@ int main(int argc, char *argv[])
   toplevel = extend(symbol("false"), boolean(0), toplevel);
   toplevel = extend(symbol("quote"), external(&builtin_quote), toplevel);
   toplevel = extend(symbol("lambda"), external(&builtin_lambda), toplevel);
-  toplevel = extend(symbol("allocation"), external(&builtin_allocation), toplevel);
+  toplevel = extend(symbol("allocation"), external(&builtin_allocation),
+    toplevel);
   toplevel = extend(symbol("define"), external(&builtin_extend), toplevel);
+  toplevel = extend(symbol("enviroment"), external(&builtin_env), toplevel);
 
   printf("lithp ith lithening\n");
   while (1)

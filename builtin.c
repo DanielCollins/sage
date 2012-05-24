@@ -51,3 +51,9 @@ struct Value *builtin_extend(struct Value *argument, struct Value **env)
   return *env;
 }
 
+struct Value *builtin_env(struct Value *argument, struct Value **env)
+{
+  (void) argument;
+  return *env;
+}
+

@@ -10,6 +10,7 @@ struct Value *builtin_lambda(struct Value *argument, struct Value **env);
 struct Value *builtin_allocation(struct Value *argument, struct Value **env);
 struct Value *builtin_bind(struct Value *argument, struct Value **env);
 struct Value *builtin_extend(struct Value *argument, struct Value **env);
+struct Value *builtin_env(struct Value *argument, struct Value **env);
 
 #endif
 

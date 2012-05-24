@@ -20,9 +20,28 @@ struct Value *bind(struct Value *name, struct Value *value, struct Value *env)
   return name;
 }
 
-void print_enviroment()
+void print_enviroment(struct Frame *f)
 {
-  printf("#<enviroment>\n");
+  struct Frame *i;
+  printf("#<enviroment\n");
+  for (i = f; i;)
+  {
+    
+    printf("  ");
+    print_value(i->name);
+    printf(" => ");
+    print_value(i->value);
+    if (i->parent)
+    {
+      printf(",\n");
+      i = (struct Frame*) i->parent->value;
+    }
+    else
+    {
+      printf(" >");
+      return;
+    }
+  } 
 }
 
 struct Value *resolve(struct Value *name, struct Value *env)
