@@ -1,0 +1,4 @@
+sage
+*.o
+*.swp
+*.core
