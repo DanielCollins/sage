@@ -3,7 +3,7 @@
 struct Value *match(struct Value *pattern, struct Value *term,
                       struct Value *env)
 {
-  struct Value *e;
+  match_top:
   if (!pattern || !term)
      return 0;
   switch (pattern->type)
@@ -11,12 +11,12 @@ struct Value *match(struct Value *pattern, struct Value *term,
     case SYMBOL:
       return extend(pattern, term, env);
     case PAIR:
-      e = match(((struct Pair*)pattern->value)->car,
-                ((struct Pair*)term->value)->car,
-                 env);
-      return match(((struct Pair*)pattern->value)->cdr,
-                   ((struct Pair*)term->value)->cdr,
-                   e);
+      env = match(((struct Pair*)pattern->value)->car,
+                  ((struct Pair*)term->value)->car,
+                   env);
+      pattern = ((struct Pair*)pattern->value)->cdr;
+      term = ((struct Pair*)term->value)->cdr;
+      goto match_top;
     default:
       if (*((int*)equal(pattern, term)->value))
         return env;
