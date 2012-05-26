@@ -51,6 +51,19 @@ struct Value *builtin_extend(struct Value *argument, struct Value **env)
   return value;
 }
 
+struct Value *builtin_set(struct Value *argument, struct Value **env)
+{
+  struct Value *name, *value;
+  name = ((struct Pair*)argument->value)->car;
+  value = ((struct Pair*)argument->value)->cdr;
+  if (value->type != PAIR)
+    return 0;
+  value = ((struct Pair*)value->value)->car;
+  evaluate(&value, env);
+  *env = bind(name, value, *env);
+  return value;
+}
+
 struct Value *builtin_env(struct Value *argument, struct Value **env)
 {
   (void) argument;

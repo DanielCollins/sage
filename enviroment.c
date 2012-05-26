@@ -23,9 +23,19 @@ struct Value *extend(struct Value *name, struct Value *value, struct Value *env)
 
 struct Value *bind(struct Value *name, struct Value *value, struct Value *env)
 {
-  (void)value;
-  (void)env;
-  return name;
+  struct Frame *f;
+  f = ((struct Enviroment*)env->value)->root;
+  while (f)
+  {
+    if (*(int*)equal(f->name, name)->value)
+    {
+      f->value = value;
+      return env;
+    }
+    f = f->parent;
+  }
+  fprintf(stderr, "no such binding\n");
+  return env;
 }
 
 void print_enviroment(struct Enviroment *e)
@@ -79,8 +89,8 @@ struct Value *equal_enviroment(struct Enviroment *a, struct Enviroment *b)
     if (!aa || !bb)
       return boolean(0);
 
-    if (!equal(aa->name, bb->name)->value ||
-        !equal(aa->value, bb->name)->value)
+    if (!*(int*)equal(aa->name, bb->name)->value ||
+        !*(int*)equal(aa->value, bb->name)->value)
       return boolean(0);
 
     aa = aa->parent;
