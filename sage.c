@@ -48,7 +48,7 @@ int main(int argc, char *argv[])
 
   psage_init();
 
-  toplevel = 0;
+  toplevel = make_enviroment();
   toplevel = extend(symbol("nil"), &Nil, toplevel);
   toplevel = extend(symbol("true"), boolean(1), toplevel);
   toplevel = extend(symbol("false"), boolean(0), toplevel);

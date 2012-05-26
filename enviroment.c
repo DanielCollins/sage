@@ -1,5 +1,14 @@
 #include "enviroment.h"
 
+struct Value *make_enviroment(void)
+{
+  struct Enviroment *e;
+  if (!(e = allocate(sizeof(struct Enviroment))))
+    return 0;
+  e->root = 0;
+  return make_value(ENVIROMENT, e);
+}
+
 struct Value *extend(struct Value *name, struct Value *value, struct Value *env)
 {
   struct Frame *f;
@@ -7,26 +16,25 @@ struct Value *extend(struct Value *name, struct Value *value, struct Value *env)
     return 0;
   f->name = name;
   f->value = value;
-  f->parent = env;
-  ++(*value).references;
-  ++(*name).references;
-  return make_value(ENVIROMENT, f);
+  f->parent = ((struct Enviroment*)env->value)->root;
+  ((struct Enviroment*)env->value)->root = f;
+  return env;
 }
 
 struct Value *bind(struct Value *name, struct Value *value, struct Value *env)
 {
-/*  struct Frame *f;*/
-(void)value;(void)env;
+  (void)value;
+  (void)env;
   return name;
 }
 
-void print_enviroment(struct Frame *f)
+void print_enviroment(struct Enviroment *e)
 {
   struct Frame *i;
   printf("#<enviroment\n");
-  for (i = f; i;)
+  i = e->root;
+  while (i)
   {
-    
     printf("  ");
     print_value(i->name);
     printf(" => ");
@@ -34,7 +42,7 @@ void print_enviroment(struct Frame *f)
     if (i->parent)
     {
       printf(",\n");
-      i = (struct Frame*) i->parent->value;
+      i = i->parent;
     }
     else
     {
@@ -46,23 +54,37 @@ void print_enviroment(struct Frame *f)
 
 struct Value *resolve(struct Value *name, struct Value *env)
 {
-  struct Value *current;
-  current = env;
-  while (current && current->type == ENVIROMENT)
+  struct Frame *current;
+  current = ((struct Enviroment*)env->value)->root;
+  while (current)
   {
-    if (*((int*)(equal(((struct Frame*)current->value)->name, name)->value)))
-      return ((struct Frame*)current->value)->value;
-    current = ((struct Frame*)current->value)->parent; 
+    if (*((int*)(equal(current->name, name)->value)))
+      return current->value;
+    current = current->parent; 
   }
   return 0;
 }
 
-struct Value *equal_enviroment(struct Frame *a, struct Frame *b)
+struct Value *equal_enviroment(struct Enviroment *a, struct Enviroment *b)
 {
-  if (equal(a->name, b->name)->value &&
-      equal(a->value, b->value)->value &&
-      equal(a->parent, b->parent)->value)
-    return boolean(1);
-  return boolean(0);
+  struct Frame *aa, *bb;
+  aa = a->root;
+  bb = b->root;
+
+  while (1)
+  {
+    if (aa == bb)
+      return boolean(1);
+
+    if (!aa || !bb)
+      return boolean(0);
+
+    if (!equal(aa->name, bb->name)->value ||
+        !equal(aa->value, bb->name)->value)
+      return boolean(0);
+
+    aa = aa->parent;
+    bb = bb->parent;
+  }
 }
 
