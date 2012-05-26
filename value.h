@@ -11,6 +11,7 @@
 #include "closure.h"
 #include "external.h"
 #include "builtin.h"
+#include "integer.h"
 
 enum Type
 {
@@ -20,7 +21,8 @@ enum Type
   ENVIROMENT,
   BOOLEAN,
   CLOSURE,
-  EXTERNAL  
+  EXTERNAL,
+  INTEGER  
 };
 
 struct Value

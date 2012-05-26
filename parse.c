@@ -133,10 +133,49 @@ struct Value *parse_boolean(FILE *s)
   }
 }
 
+struct Value *parse_integer(FILE *s)
+{
+  int c, i, z;
+  char *identifier;
+  identifier = 0;
+  z = i = 0;
+  while (1)
+  {
+    c = fgetc(s);
+    if (!isdigit(c))
+    {
+      ungetc(c, s);
+      if (i)
+        identifier[i] = '\0';
+      break;
+    }
+    else
+    {
+      if (!z)
+      {
+        z = 1;
+        identifier = allocate(sizeof(char));
+      }
+      if (i >= z)
+      {
+        z *= 2;
+        identifier = realloc(identifier, z);
+      }
+      identifier[i] = c;
+      ++i;
+    }
+  }
+  if (!i)
+    return 0;
+  return make_integer(atoi(identifier));
+}
+
 struct Value *parse_atom(FILE *s)
 {
   struct Value *result;
   if ((result = parse_boolean(s)))
+    return result;
+  if ((result = parse_integer(s)))
     return result;
   result = parse_symbol(s);
   return result;

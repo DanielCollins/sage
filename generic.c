@@ -25,6 +25,9 @@ void print_value(struct Value *v)
     case EXTERNAL:
       print_external();
       return;
+    case INTEGER:
+      print_integer((int*) v->value);
+      return;
     default:
       fprintf(stderr, "print_value: unkown type\n");
   }
@@ -57,6 +60,8 @@ struct Value *equal(struct Value *a, struct Value *b)
     case EXTERNAL:
       return equal_external((struct External*) a->value,
                             (struct External*) b->value);
+    case INTEGER:
+      return equal_integer((int*) a->value, (int*) b->value);
     default:
       fprintf(stderr, "equal: unkown type\n");
       return 0; 
