@@ -5,14 +5,14 @@ void *allocate(size_t size)
   void *r;
   r = malloc(size);
   if (r)
-    ++memory_used;
+    memory_used += size;
   return r;
 }
 
-void deallocate(void *ptr)
+void deallocate(void *ptr, size_t size)
 {
-  --memory_used;
   free(ptr);
+  memory_used -= size;
 }
 
 struct Value *make_value(enum Type type, void *value)

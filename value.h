@@ -33,7 +33,7 @@ struct Value
 size_t memory_used;
 
 void *allocate(size_t size);
-void deallocate(void *ptr);
+void deallocate(void *ptr, size_t size);
 
 struct Value *make_value(enum Type type, void *value);
 
