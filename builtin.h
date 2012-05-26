@@ -13,6 +13,7 @@ struct Value *builtin_extend(struct Value *argument, struct Value **env);
 struct Value *builtin_env(struct Value *argument, struct Value **env);
 struct Value *builtin_set(struct Value *argument, struct Value **env);
 struct Value *builtin_eval(struct Value *argument, struct Value **env);
+struct Value *builtin_nilp(struct Value *argument, struct Value **env);
 
 #endif
 

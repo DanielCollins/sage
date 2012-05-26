@@ -86,4 +86,14 @@ struct Value *builtin_eval(struct Value *argument, struct Value **env)
   return exp;
 }
 
+struct Value *builtin_nilp(struct Value *argument, struct Value **env)
+{
+  struct Value *exp;
+  (void) env;
+  exp = ((struct Pair*)argument->value)->car;
+  evaluate(&exp, env);
+  if (exp->type == NIL)
+    return boolean(1);
+  return boolean(0);
+}
 
