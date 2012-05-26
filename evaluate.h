@@ -5,7 +5,7 @@
 #include <stdlib.h>
 #include "value.h"
 
-void evaluate(struct Value **exp, struct Value **env);
+void evaluate(struct Value **exp, struct Value *env);
 
 #endif
 

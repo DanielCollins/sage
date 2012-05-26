@@ -14,7 +14,7 @@ void print_value(struct Value *v)
       print_symbol((Symbol) v->value);
       return;
     case ENVIROMENT:
-      print_enviroment((struct Frame*) v->value);
+      print_enviroment((struct Enviroment*) v->value);
       return;
     case BOOLEAN:
       print_boolean((int*) v->value);
@@ -47,8 +47,8 @@ struct Value *equal(struct Value *a, struct Value *b)
     case SYMBOL:
       return equal_symbol((Symbol) a->value, (Symbol) b->value);
     case ENVIROMENT:
-      return equal_enviroment((struct Frame*) a->value,
-                              (struct Frame*) b->value);
+      return equal_enviroment((struct Enviroment*) a->value,
+                              (struct Enviroment*) b->value);
     case BOOLEAN:
       return equal_boolean((int*) a->value, (int*) b->value);
     case CLOSURE:

@@ -9,7 +9,7 @@ struct Value *match(struct Value *pattern, struct Value *term,
   switch (pattern->type)
   {
     case SYMBOL:
-      return extend(pattern, term, env);
+      return extended(pattern, term, env);
     case PAIR:
       env = match(((struct Pair*)pattern->value)->car,
                   ((struct Pair*)term->value)->car,
@@ -25,7 +25,7 @@ struct Value *match(struct Value *pattern, struct Value *term,
   }
 }
 
-void evlis(struct Value **l, struct Value **env)
+void evlis(struct Value **l, struct Value *env)
 {
   while (1)
   {
@@ -42,7 +42,7 @@ void evlis(struct Value **l, struct Value **env)
   }
 }
 
-void evaluate(struct Value **exp, struct Value **env)
+void evaluate(struct Value **exp, struct Value *env)
 {
   eval_top:
   switch ((*exp)->type)
@@ -66,7 +66,7 @@ void evaluate(struct Value **exp, struct Value **env)
               c = (struct Closure*)operator->value;
               argument = ((struct Pair*)(*exp)->value)->cdr;
               evlis(&argument, env);
-              if (!(*env = match(c->args, argument, c->env)))
+              if (!(env = match(c->args, argument, c->env)))
               {
                 fprintf(stderr, "cannot combine\n");
                 return;
@@ -86,7 +86,7 @@ void evaluate(struct Value **exp, struct Value **env)
         }
       }
     case SYMBOL:
-      if (!(*exp = resolve(*exp, *env)))
+      if (!(*exp = resolve(*exp, env)))
       {
         fprintf(stderr, "could not resolve\n");
         *exp = 0;

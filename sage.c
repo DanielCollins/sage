@@ -71,7 +71,7 @@ int main(int argc, char *argv[])
       fprintf(stderr, "could not parse\n");
       continue;
     }
-    evaluate(&v, &toplevel);
+    evaluate(&v, toplevel);
     if (!v)
     {
       fprintf(stderr, "could not evaluate\n");

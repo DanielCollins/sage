@@ -6,11 +6,11 @@
 
 struct External
 {
-  struct Value *(*implementation) (struct Value *argument, struct Value **env);
+  struct Value *(*implementation) (struct Value *argument, struct Value *env);
 };
 
 struct Value *external(struct Value *(*implementation)(struct Value *argument,
-                                                       struct Value **env));
+                                                       struct Value *env));
 void print_external();
 struct Value *equal_external(struct External *a, struct External *b);
 

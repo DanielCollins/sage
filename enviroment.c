@@ -21,6 +21,22 @@ struct Value *extend(struct Value *name, struct Value *value, struct Value *env)
   return env;
 }
 
+struct Value *extended(struct Value *name, struct Value *value,
+  struct Value *env)
+{
+  struct Frame *f;
+  struct Value *result;
+  if (!(f = allocate(sizeof(struct Frame))))
+    return 0;
+  f->name = name;
+  f->value = value;
+  f->parent = ((struct Enviroment*)env->value)->root;
+  if (!(result = make_enviroment()))
+    return 0;
+  ((struct Enviroment*)result->value)->root = f;
+  return result;
+}
+
 struct Value *bind(struct Value *name, struct Value *value, struct Value *env)
 {
   struct Frame *f;
