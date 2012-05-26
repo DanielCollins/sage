@@ -21,8 +21,7 @@ struct Value *builtin_allocation(struct Value *argument, struct Value *env)
 {
   (void) argument;
   (void) env;
-  printf("%d\n", memory_used);
-  return nil();
+  return make_integer(memory_used);
 }
 
 struct Value *builtin_bind(struct Value *argument, struct Value *env)
