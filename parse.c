@@ -84,7 +84,7 @@ struct Value *parse_symbol(FILE *s)
   int c, l, i;
   i = l = 0;
   name = 0;
-  while ((c = fgetc(s)) != EOF && isalnum(c))
+  while ((c = fgetc(s)) != EOF && !isspace(c) && c != '(' && c != ')')
   {
     if (!l)
     {
