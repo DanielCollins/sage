@@ -101,7 +101,11 @@ struct Value *parse_symbol(FILE *s)
     name[i++] = c;
     name[i] = '\0';
   }
-  ungetc(c, s);
+  if (ungetc(c, s) == EOF)
+  {
+    fprintf(stderr, "could not ungetc\n");
+    return 0;
+  }
   if (i)
     return symbol(name);
   return 0;

@@ -70,3 +70,20 @@ struct Value *builtin_env(struct Value *argument, struct Value **env)
   return *env;
 }
 
+struct Value *builtin_eval(struct Value *argument, struct Value **env)
+{
+  struct Value *exp, *e;
+  exp = ((struct Pair*)argument->value)->car;
+  e = ((struct Pair*)argument->value)->cdr;
+  if (e->type == PAIR)
+  {
+    e = ((struct Pair*)e->value)->car;
+    evaluate(&e, env);
+  }
+  else
+    e = *env;
+  evaluate(&exp, &e);
+  return exp;
+}
+
+
