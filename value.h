@@ -37,7 +37,11 @@ size_t memory_used;
 void *allocate(size_t size);
 void deallocate(void *ptr, size_t size);
 
+void ref_inc(struct Value *v);
+void ref_dec(struct Value *v);
+
 struct Value *make_value(enum Type type, void *value);
+void free_value(struct Value *v);
 
 #endif
 

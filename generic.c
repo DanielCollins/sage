@@ -68,3 +68,37 @@ struct Value *equal(struct Value *a, struct Value *b)
   }  
 }
 
+void collect(struct Value *v)
+{
+  printf("collecting ");
+  print_value(v);
+  printf("\n");
+  if (!v)
+    return;
+  switch (v->type)
+  {
+    case PAIR:
+      free_pair((struct Pair*) v->value);
+      break;
+    case SYMBOL:
+      free_symbol((Symbol) v->value);
+      break;
+    case ENVIROMENT:
+      free_enviroment((struct Enviroment*) v->value);
+      break;
+    case CLOSURE:
+      free_closure((struct Closure*) v->value);
+      break;
+    case EXTERNAL:
+      free_external((struct External*) v->value);
+      break;
+    case INTEGER:
+      free_integer((int*) v->value);
+      break;
+    case NIL:
+    case BOOLEAN:
+      return;
+  }
+  free_value(v);
+}
+

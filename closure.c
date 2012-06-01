@@ -9,6 +9,9 @@ struct Value *closure(struct Value *args, struct Value *body,
   c->args = args;
   c->body = body;
   c->env = env;
+  ref_inc(args);
+  ref_inc(body);
+  ref_inc(env);
   return make_value(CLOSURE, c);
 }
 
@@ -24,5 +27,13 @@ struct Value *equal_closure(struct Closure *a, struct Closure *b)
       *((int*)equal(a->env, b->env)->value))
     return boolean(1);
   return boolean(0);
+}
+
+void free_closure(struct Closure *c)
+{
+  ref_dec(c->args);
+  ref_dec(c->body);
+  ref_dec(c->env);
+  deallocate(c, sizeof(struct Closure));
 }
 

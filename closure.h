@@ -13,6 +13,7 @@ struct Value *closure(struct Value *args, struct Value *body,
                         struct Value *env);
 void print_closure();
 struct Value *equal_closure(struct Closure *a, struct Closure *b);
+void free_closure(struct Closure *c);
 
 #endif
 

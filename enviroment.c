@@ -18,6 +18,8 @@ struct Value *extend(struct Value *name, struct Value *value, struct Value *env)
   f->value = value;
   f->parent = ((struct Enviroment*)env->value)->root;
   ((struct Enviroment*)env->value)->root = f;
+  ref_inc(value);
+  ref_inc(name);
   return env;
 }
 
@@ -34,6 +36,8 @@ struct Value *extended(struct Value *name, struct Value *value,
   if (!(result = make_enviroment()))
     return 0;
   ((struct Enviroment*)result->value)->root = f;
+  ref_inc(value);
+  ref_inc(name);
   return result;
 }
 
@@ -45,7 +49,10 @@ struct Value *bind(struct Value *name, struct Value *value, struct Value *env)
   {
     if (*(int*)equal(f->name, name)->value)
     {
+      ref_dec(f->value);
       f->value = value;
+      ref_inc(f->value);
+      ref_inc(f->name);
       return env;
     }
     f = f->parent;
@@ -112,5 +119,11 @@ struct Value *equal_enviroment(struct Enviroment *a, struct Enviroment *b)
     aa = aa->parent;
     bb = bb->parent;
   }
+}
+
+void free_enviroment(struct Enviroment *e)
+{
+  /* not implemented */
+  (void) e;
 }
 

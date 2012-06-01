@@ -71,13 +71,27 @@ void evaluate(struct Value **exp, struct Value *env)
                 fprintf(stderr, "cannot combine\n");
                 return;
               }
+              ref_dec(*exp);
               *exp = c->body;
               goto eval_top;
             }
           case EXTERNAL:
-            *exp = ((struct External*)operator->value)->
-                     implementation(((struct Pair*)(*exp)->value)->cdr, env);
-            return;
+            {
+              struct Value *(*ii) (struct Value *argument, struct Value *env);
+              struct Value *t;
+              t = *exp;
+
+(void) malloc(1);
+
+              ii = ((struct External*)operator->value)->implementation;
+
+             *exp = ii(((struct Pair*)(*exp)->value)->cdr, env);
+
+printf("\n");
+print_value(t);
+printf("\n");
+              return;
+            }
           default:
             fprintf(stderr, "non operative\n");
             print_value(operator);
@@ -86,10 +100,15 @@ void evaluate(struct Value **exp, struct Value *env)
         }
       }
     case SYMBOL:
-      if (!(*exp = resolve(*exp, env)))
       {
-        fprintf(stderr, "could not resolve\n");
-        *exp = 0;
+        struct Value *t;
+        if (!(t = resolve(*exp, env)))
+        {
+          fprintf(stderr, "could not resolve\n");
+          *exp = 0;
+        }
+        ref_dec(*exp);
+        *exp = t;
       }
     default:
       return;

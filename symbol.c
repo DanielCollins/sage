@@ -17,3 +17,8 @@ struct Value *equal_symbol(Symbol a, Symbol b)
   return boolean(0);
 }
 
+void free_symbol(Symbol s)
+{
+  deallocate(s, sizeof(char) * strlen(s));
+}
+

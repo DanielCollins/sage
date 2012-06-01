@@ -21,3 +21,8 @@ struct Value *equal_integer(int *a, int *b)
   return boolean(0);
 }
 
+void free_integer(int *i)
+{
+  deallocate(i, sizeof(int));
+}
+

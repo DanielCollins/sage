@@ -6,6 +6,7 @@
 
 void print_value(struct Value *v);
 struct Value *equal(struct Value *a, struct Value *b);
+void collect(struct Value *v);
 
 #endif
 

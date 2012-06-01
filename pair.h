@@ -17,6 +17,7 @@ void set_car(struct Pair *p, struct Value *v);
 void set_cdr(struct Pair *p, struct Value *v);
 void print_pair(struct Pair *p);
 struct Value *equal_pair(struct Pair *a, struct Pair *b);
+void free_pair(struct Pair *p);
 
 #endif
 

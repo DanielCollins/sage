@@ -71,6 +71,7 @@ int main(int argc, char *argv[])
       fprintf(stderr, "could not parse\n");
       continue;
     }
+    ref_inc(v);
     evaluate(&v, toplevel);
     if (!v)
     {
@@ -79,6 +80,7 @@ int main(int argc, char *argv[])
     }
     print_value(v);
     printf("\n");
+    ref_dec(v);
   }
   return EXIT_SUCCESS;
 }

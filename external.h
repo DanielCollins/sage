@@ -13,6 +13,7 @@ struct Value *external(struct Value *(*implementation)(struct Value *argument,
                                                        struct Value *env));
 void print_external();
 struct Value *equal_external(struct External *a, struct External *b);
+void free_external(struct External *e);
 
 #endif
 

@@ -22,3 +22,9 @@ struct Value *equal_external(struct External *a, struct External *b)
   return boolean(0);
 }
 
+void free_external(struct External *e)
+{
+  deallocate(e, sizeof(struct External));
+}
+
+

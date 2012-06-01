@@ -10,26 +10,28 @@ struct Value *pair(struct Value *car, struct Value *cdr)
   p->cdr = cdr;
   result = make_value(PAIR, p);
   if (car)
-    ++(*car).references;
+    ref_inc(car);
   if (cdr)
-    ++(*cdr).references;
+    ref_inc(cdr);
   return result;
 }
 
 void set_car(struct Pair *p, struct Value *v)
 {
   if (p->car)
-    --p->car->references;
+    ref_dec(p->car);
   p->car = v;
-  ++v->references;
+  if (v)
+    ref_inc(v);
 }
 
 void set_cdr(struct Pair *p, struct Value *v)
 {
   if (p->cdr)
-    --p->cdr;
+    ref_dec(p->cdr);
   p->cdr = v;
-  ++v->references;
+  if (v)
+    ref_inc(v);
 }
 
 void print_pair(struct Pair *p)
@@ -38,7 +40,12 @@ void print_pair(struct Pair *p)
   while (1)
   {
     print_value(p->car);
-    if (p->cdr->type == NIL)
+    if (!p->cdr)
+    {
+      printf(" . #{sage internal null})");
+      return;
+    }
+    else if (p->cdr->type == NIL)
     {
       putchar(')');
       return; 
@@ -66,5 +73,12 @@ struct Value *equal_pair(struct Pair *a, struct Pair *b)
   if (equal(a->car, b->car)->value && equal(a->cdr, b->cdr)->value)
     return boolean(1);
   return boolean(0);
+}
+
+void free_pair(struct Pair *p)
+{
+  ref_dec(p->car);
+  ref_dec(p->cdr);
+  deallocate(p, sizeof(struct Pair));
 }
 
