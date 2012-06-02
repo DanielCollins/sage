@@ -146,7 +146,19 @@ struct Value *parse_integer(FILE *s)
     {
       ungetc(c, s);
       if (i)
+      {
+        if (!z)
+        {
+          z = 1;
+          identifier = allocate(sizeof(char));
+        }
+        if (i >= z)
+        {
+          z *= 2;
+          identifier = realloc(identifier, z);
+        }
         identifier[i] = '\0';
+      }
       break;
     }
     else
