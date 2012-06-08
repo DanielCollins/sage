@@ -107,7 +107,10 @@ struct Value *parse_symbol(FILE *s)
     return 0;
   }
   if (i)
+  {
+    name = realloc(name, i);
     return symbol(name);
+  }
   return 0;
 }
 
