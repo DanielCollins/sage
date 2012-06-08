@@ -181,7 +181,9 @@ struct Value *parse_integer(FILE *s)
     }
   }
   if (!i)
+    
     return 0;
+  identifier = realloc(identifier, i); 
   return make_integer(atoi(identifier));
 }
 
