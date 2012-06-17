@@ -107,7 +107,10 @@ struct Value *parse_symbol(FILE *s)
     return 0;
   }
   if (i)
+  {
+    name = realloc(name, i);
     return symbol(name);
+  }
   return 0;
 }
 
@@ -178,7 +181,9 @@ struct Value *parse_integer(FILE *s)
     }
   }
   if (!i)
+    
     return 0;
+  identifier = realloc(identifier, i); 
   return make_integer(atoi(identifier));
 }
 
