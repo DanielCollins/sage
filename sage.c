@@ -1,11 +1,29 @@
-#include <stdlib.h>
-#include <stdio.h>
-#include <string.h>
-#include "value.h"
-#include "generic.h"
-#include "parse.h"
-#include "enviroment.h"
-#include "evaluate.h"
+#include "sage.h"
+
+#define SYM(name) (symbol(strcpy(allocate(sizeof(char) * (strlen(name) + 1)), \
+ name)))
+
+#define REGISTER(name, value) (toplevel = extend(SYM(name), (value), toplevel))
+
+struct Value *v;
+
+void toplevel_init(void)
+{
+  toplevel = make_enviroment();
+  ref_inc(toplevel);
+  REGISTER("nil", &Nil);
+  REGISTER("true", boolean(1));
+  REGISTER("false", boolean(0));
+  REGISTER("quote", external(&builtin_quote));
+  REGISTER("lambda",  external(&builtin_lambda));
+  REGISTER("allocation", external(&builtin_allocation));
+  REGISTER("define", external(&builtin_extend));  
+  REGISTER("enviroment", external(&builtin_env));
+  REGISTER("set!", external(&builtin_set));
+  REGISTER("evaluate", external(&builtin_eval));
+  REGISTER("nil?", external(&builtin_nilp));
+  REGISTER("halt", external(&builtin_exit));
+}
 
 void psage_init(void)
 {
@@ -20,12 +38,22 @@ void psage_init(void)
   Falsey.type = BOOLEAN;
   Falsey.value = allocate(sizeof(int));
   *((int*)Falsey.value) = 0;
+  toplevel_init();
+}
+
+void psage_snuff(void)
+{
+  extern struct Value Truthy, Falsey;
+  ref_dec(v);
+  ref_dec(toplevel);
+  deallocate(Truthy.value, sizeof(int));
+  deallocate(Falsey.value, sizeof(int));
+  exit(EXIT_SUCCESS);
 }
 
 int main(int argc, char *argv[])
 {
-  struct Value *v;
-  struct Value *toplevel;
+  struct Value *out;
   FILE *istream;
 
   if (argc == 1)
@@ -48,20 +76,6 @@ int main(int argc, char *argv[])
 
   psage_init();
 
-  toplevel = make_enviroment();
-  toplevel = extend(symbol("nil"), &Nil, toplevel);
-  toplevel = extend(symbol("true"), boolean(1), toplevel);
-  toplevel = extend(symbol("false"), boolean(0), toplevel);
-  toplevel = extend(symbol("quote"), external(&builtin_quote), toplevel);
-  toplevel = extend(symbol("lambda"), external(&builtin_lambda), toplevel);
-  toplevel = extend(symbol("allocation"), external(&builtin_allocation),
-    toplevel);
-  toplevel = extend(symbol("define"), external(&builtin_extend), toplevel);
-  toplevel = extend(symbol("enviroment"), external(&builtin_env), toplevel);
-  toplevel = extend(symbol("set!"), external(&builtin_set), toplevel);
-  toplevel = extend(symbol("evaluate"), external(&builtin_eval), toplevel);
-  toplevel = extend(symbol("nil?"), external(&builtin_nilp), toplevel);
-
   printf("lithp ith lithening\n");
   while (1)
   {
@@ -71,17 +85,16 @@ int main(int argc, char *argv[])
       fprintf(stderr, "could not parse\n");
       continue;
     }
+    out = 0;
     ref_inc(v);
-    evaluate(&v, toplevel);
-    if (!v)
-    {
-      fprintf(stderr, "could not evaluate\n");
-      continue;    
-    }
-    print_value(v);
-    printf("\n");
+    evaluate(v, toplevel, &out);
+    ref_inc(out);
     ref_dec(v);
+    print_value(out);
+    ref_dec(out);
+    printf("\n");
   }
-  return EXIT_SUCCESS;
+  psage_snuff();
+  return EXIT_FAILURE;
 }
 

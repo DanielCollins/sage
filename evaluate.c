@@ -25,92 +25,86 @@ struct Value *match(struct Value *pattern, struct Value *term,
   }
 }
 
-void evlis(struct Value **l, struct Value *env)
+void evlis(struct Value *l, struct Value *env, struct Value **out)
 {
-  while (1)
+  struct Value *i, *o, *e, *t;
+  o = e = 0;
+  for (i = l; i->type == PAIR; i = ((struct Pair*)i->value)->cdr)
   {
-    if ((*l)->type == PAIR)
+    evaluate(((struct Pair*)i->value)->car, env, &t);
+    if (o)
     {
-      evaluate(&((struct Pair*)(*l)->value)->car, env);
-      l = &((struct Pair*)(*l)->value)->cdr;
+      set_cdr((struct Pair*)e->value, pair(t, 0));
+      e = ((struct Pair*)e->value)->cdr;
     }
     else
-    {
-      evaluate(l, env);
-      return;
-    }
+      o = e = pair(t, 0);
   }
+  evaluate(i, env, &t);
+  if (o)
+    set_cdr((struct Pair*)e->value, t);
+  else
+    o = t;
+  *out = o;
 }
 
-void evaluate(struct Value **exp, struct Value *env)
+void evaluate(struct Value *exp, struct Value *env, struct Value **out)
 {
   eval_top:
-  switch ((*exp)->type)
+  switch (exp->type)
   {
     case PAIR:
       {
         struct Value *operator, *argument;
-        operator = ((struct Pair*)(*exp)->value)->car;
-        evaluate(&operator, env);
+        operator = ((struct Pair*)exp->value)->car;
+        evaluate(operator, env, &operator);
         if (!operator)
         {
           fprintf(stderr, "could not produce operator\n");
-          *exp = 0;
           return;
         }
+        set_car(((struct Pair*)exp->value), operator);
         switch (operator->type)
         {
           case CLOSURE:
             {
               struct Closure *c;
               c = (struct Closure*)operator->value;
-              argument = ((struct Pair*)(*exp)->value)->cdr;
-              evlis(&argument, env);
+              argument = ((struct Pair*)exp->value)->cdr;
+              evlis(argument, env, &argument);
               if (!(env = match(c->args, argument, c->env)))
               {
                 fprintf(stderr, "cannot combine\n");
                 return;
               }
-              ref_dec(*exp);
-              *exp = c->body;
+              exp = c->body;
               goto eval_top;
             }
           case EXTERNAL:
             {
-              struct Value *(*ii) (struct Value *argument, struct Value *env);
-              struct Value *t;
-              t = *exp;
-
-(void) malloc(1);
-
-              ii = ((struct External*)operator->value)->implementation;
-
-             *exp = ii(((struct Pair*)(*exp)->value)->cdr, env);
-
-printf("\n");
-print_value(t);
-printf("\n");
+              ((struct External*)operator->value)->implementation
+                (((struct Pair*)exp->value)->cdr, env, out);
               return;
             }
           default:
             fprintf(stderr, "non operative\n");
             print_value(operator);
-            *exp = 0;
             return;
         }
       }
     case SYMBOL:
       {
         struct Value *t;
-        if (!(t = resolve(*exp, env)))
+        if (!(t = resolve(exp, env)))
         {
           fprintf(stderr, "could not resolve\n");
-          *exp = 0;
+          return;
         }
-        ref_dec(*exp);
-        *exp = t;
+        *out = t;
+        return;
       }
     default:
+      *out = exp;
       return;
   }
 }

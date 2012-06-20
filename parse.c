@@ -108,7 +108,7 @@ struct Value *parse_symbol(FILE *s)
   }
   if (i)
   {
-    name = realloc(name, i);
+    name = realloc(name, i + 1);
     return symbol(name);
   }
   return 0;
@@ -140,6 +140,7 @@ struct Value *parse_integer(FILE *s)
 {
   int c, i, z;
   char *identifier;
+  struct Value *result;
   identifier = 0;
   z = i = 0;
   while (1)
@@ -181,10 +182,10 @@ struct Value *parse_integer(FILE *s)
     }
   }
   if (!i)
-    
     return 0;
-  identifier = realloc(identifier, i); 
-  return make_integer(atoi(identifier));
+  result = make_integer(atoi(identifier));
+  deallocate(identifier, i + 1);
+  return result;
 }
 
 struct Value *parse_atom(FILE *s)

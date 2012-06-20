@@ -1,4 +1,4 @@
-CFLAGS += -ansi -pedantic -Werror -Wall -Wextra -O3
+CFLAGS += -ansi -pedantic -Werror -Wall -Wextra -O1
 
 all: sage
 

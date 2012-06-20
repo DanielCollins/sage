@@ -4,16 +4,26 @@
 #include <stdio.h>
 #include "value.h"
 #include "evaluate.h"
+#include "sage.h"
 
-struct Value *builtin_quote(struct Value *argument, struct Value *env);
-struct Value *builtin_lambda(struct Value *argument, struct Value *env);
-struct Value *builtin_allocation(struct Value *argument, struct Value *env);
-struct Value *builtin_bind(struct Value *argument, struct Value *env);
-struct Value *builtin_extend(struct Value *argument, struct Value *env);
-struct Value *builtin_env(struct Value *argument, struct Value *env);
-struct Value *builtin_set(struct Value *argument, struct Value *env);
-struct Value *builtin_eval(struct Value *argument, struct Value *env);
-struct Value *builtin_nilp(struct Value *argument, struct Value *env);
+void builtin_quote(struct Value *argument, struct Value *env,
+  struct Value **out);
+void builtin_lambda(struct Value *argument, struct Value *env,
+  struct Value **out);
+void builtin_allocation(struct Value *argument, struct Value *env,
+  struct Value **out);
+void builtin_bind(struct Value *argument, struct Value *env,
+  struct Value **out);
+void builtin_extend(struct Value *argument, struct Value *env,
+  struct Value **out);
+void builtin_env(struct Value *argument, struct Value *env, struct Value **out);
+void builtin_set(struct Value *argument, struct Value *env, struct Value **out);
+void builtin_eval(struct Value *argument, struct Value *env,
+  struct Value **out);
+void builtin_nilp(struct Value *argument, struct Value *env,
+ struct Value **out);
+void builtin_exit(struct Value *argument, struct Value *env,
+  struct Value **out);
 
 #endif
 

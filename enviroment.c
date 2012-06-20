@@ -123,7 +123,17 @@ struct Value *equal_enviroment(struct Enviroment *a, struct Enviroment *b)
 
 void free_enviroment(struct Enviroment *e)
 {
-  /* not implemented */
-  (void) e;
+  struct Frame *i, *t;
+  if (!e) return;
+  for (i = e->root; i; i = t)
+  {
+    ref_dec(i->name);
+    i->name = 0;
+    ref_dec(i->value);
+    i->value = 0;
+    t = i->parent;
+    deallocate(i, sizeof(struct Frame));
+  }
+  deallocate(e, sizeof(struct Enviroment));
 }
 

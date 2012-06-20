@@ -1,7 +1,8 @@
 #include "external.h"
 
-struct Value *external(struct Value *(*implementation)(struct Value *argument,
-                                                       struct Value *env))
+struct Value *external(void (*implementation)(struct Value *argument,
+                                              struct Value *env,
+                                              struct Value **out))
 {
   struct External *e;
   if (!(e = allocate(sizeof(struct External))))
