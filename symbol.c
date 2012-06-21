@@ -19,6 +19,6 @@ struct Value *equal_symbol(Symbol a, Symbol b)
 
 void free_symbol(Symbol s)
 {
-  deallocate(s, sizeof(char) * strlen(s));
+  deallocate(s, sizeof(char) * (strlen(s) + 1));
 }
 

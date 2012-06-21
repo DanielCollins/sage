@@ -81,7 +81,7 @@ struct Value *parse_list(FILE *s)
 struct Value *parse_symbol(FILE *s)
 {
   char *name;
-  int c, l, i;
+  int c, l, i, t;
   i = l = 0;
   name = 0;
   while ((c = fgetc(s)) != EOF && !isspace(c) && c != '(' && c != ')')
@@ -94,9 +94,11 @@ struct Value *parse_symbol(FILE *s)
     }
     else if (i + 1 >= l) 
     {
-      l *= 2;
-      if (!(name = realloc(name, sizeof(char) * l)))
+      t = l * 2;
+      if (!(name = (char*) reallocate(name, sizeof(char) * l ,
+           sizeof(char) * t)))
         return 0;
+      l = t;
     }
     name[i++] = c;
     name[i] = '\0';
@@ -108,7 +110,7 @@ struct Value *parse_symbol(FILE *s)
   }
   if (i)
   {
-    name = realloc(name, i + 1);
+    name = (char*) reallocate(name, sizeof(char) * l, sizeof(char) * (i + 1));
     return symbol(name);
   }
   return 0;
