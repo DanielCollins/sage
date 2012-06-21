@@ -70,9 +70,6 @@ struct Value *equal(struct Value *a, struct Value *b)
 
 void collect(struct Value *v)
 {
-  printf("collecting ");
-  print_value(v);
-  printf("\n");
   if (!v)
     return;
   switch (v->type)
