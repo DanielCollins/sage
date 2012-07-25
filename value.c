@@ -17,7 +17,7 @@ void deallocate(void *ptr, size_t size)
 
 void *reallocate(void *ptr, size_t old_size, size_t new_size)
 {
-  memory_used += (ssize_t) new_size - old_size;
+  memory_used += (size_t) new_size - old_size;
   return realloc(ptr, new_size);
 }
 

@@ -36,6 +36,7 @@ size_t memory_used;
 
 void *allocate(size_t size);
 void deallocate(void *ptr, size_t size);
+void *reallocate(void *ptr, size_t old_size, size_t new_size);
 
 void ref_inc(struct Value *v);
 void ref_dec(struct Value *v);
