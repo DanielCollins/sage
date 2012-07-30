@@ -13,6 +13,7 @@
 #include "integer.h"
 #include "character.h"
 #include "evaluate.h"
+#include "operator.h"
 
 enum Type
 {
@@ -24,7 +25,8 @@ enum Type
   CLOSURE,
   INTRINSIC,
   INTEGER,
-  CHARACTER  
+  CHARACTER,
+  OPERATOR  
 };
 
 struct Value

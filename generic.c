@@ -31,6 +31,9 @@ void print_value(struct Value *v)
     case CHARACTER:
       print_character((struct Character*) v->value);
       return;
+    case OPERATOR:
+      print_operator((struct Operator*) v->value);
+      break;
     default:
       fprintf(stderr, "print_value: unkown type\n");
   }
@@ -67,6 +70,9 @@ struct Value *equal(struct Value *a, struct Value *b)
       return equal_integer((int*) a->value, (int*) b->value);
     case CHARACTER:
       return equal_character((struct Character*) a->value, (struct Character*) b->value);
+    case OPERATOR:
+      return equal_operator((struct Operator*) a->value,
+                            (struct Operator*) b->value);
     default:
       fprintf(stderr, "equal: unkown type\n");
       return 0; 
@@ -99,6 +105,9 @@ void collect(struct Value *v)
       break;
     case CHARACTER:
       free_character((struct Character*) v->value);
+      break;
+    case OPERATOR:
+      free_operator((struct Operator*) v->value);
       break;
     case NIL:
     case BOOLEAN:

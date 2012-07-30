@@ -80,6 +80,19 @@ void evaluate(struct Value *exp, struct Value *env, struct Value **out)
               exp = c->body;
               goto eval_top;
             }
+          case OPERATOR:
+            {
+              struct Operator *o;
+              o = (struct Operator*) operator->value;
+              argument = ((struct Pair*)exp->value)->cdr;
+              if (!(env = match(o->args, argument, o->env)))
+              {
+                fprintf(stderr, "cannot combine\n");
+                return;
+              }
+              exp = o->body;
+              goto eval_top;
+            }
           case INTRINSIC:
             {
               ((struct Intrinsic*)operator->value)->implementation

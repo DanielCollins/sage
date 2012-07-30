@@ -23,6 +23,7 @@ void toplevel_init(void)
   REGISTER("evaluate", intrinsic(&builtin_eval));
   REGISTER("nil?", intrinsic(&builtin_nilp));
   REGISTER("halt", intrinsic(&builtin_exit));
+  REGISTER("operator", intrinsic(&builtin_operator));
 }
 
 void psage_init(void)
