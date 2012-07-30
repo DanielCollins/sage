@@ -1,21 +1,21 @@
-#ifndef EXTERNAL_H
-#define EXTERNAL_H
+#ifndef INTRINSIC_H
+#define INTRINSIC_H
 
 #include <stdlib.h>
 #include "value.h"
 
-struct External
+struct Intrinsic
 {
   void (*implementation) (struct Value *argument, struct Value *env,
     struct Value **out);
 };
 
-struct Value *external(void (*implementation)(struct Value *argument,
+struct Value *intrinsic(void (*implementation)(struct Value *argument,
                                               struct Value *env,
                                               struct Value **out));
-void print_external();
-struct Value *equal_external(struct External *a, struct External *b);
-void free_external(struct External *e);
+void print_intrinsic();
+struct Value *equal_intrinsic(struct Intrinsic *a, struct Intrinsic *b);
+void free_intrinsic(struct Intrinsic *e);
 
 #endif
 

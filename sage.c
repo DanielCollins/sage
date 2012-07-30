@@ -14,15 +14,15 @@ void toplevel_init(void)
   REGISTER("nil", &Nil);
   REGISTER("true", boolean(1));
   REGISTER("false", boolean(0));
-  REGISTER("quote", external(&builtin_quote));
-  REGISTER("lambda",  external(&builtin_lambda));
-  REGISTER("allocation", external(&builtin_allocation));
-  REGISTER("define", external(&builtin_extend));  
-  REGISTER("enviroment", external(&builtin_env));
-  REGISTER("set!", external(&builtin_set));
-  REGISTER("evaluate", external(&builtin_eval));
-  REGISTER("nil?", external(&builtin_nilp));
-  REGISTER("halt", external(&builtin_exit));
+  REGISTER("quote", intrinsic(&builtin_quote));
+  REGISTER("lambda",  intrinsic(&builtin_lambda));
+  REGISTER("allocation", intrinsic(&builtin_allocation));
+  REGISTER("define", intrinsic(&builtin_extend));  
+  REGISTER("enviroment", intrinsic(&builtin_env));
+  REGISTER("set!", intrinsic(&builtin_set));
+  REGISTER("evaluate", intrinsic(&builtin_eval));
+  REGISTER("nil?", intrinsic(&builtin_nilp));
+  REGISTER("halt", intrinsic(&builtin_exit));
 }
 
 void psage_init(void)

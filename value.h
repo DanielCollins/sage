@@ -9,7 +9,7 @@
 #include "enviroment.h"
 #include "boolean.h"
 #include "closure.h"
-#include "external.h"
+#include "intrinsic.h"
 #include "builtin.h"
 #include "integer.h"
 #include "character.h"
@@ -22,7 +22,7 @@ enum Type
   ENVIROMENT,
   BOOLEAN,
   CLOSURE,
-  EXTERNAL,
+  INTRINSIC,
   INTEGER,
   CHARACTER  
 };

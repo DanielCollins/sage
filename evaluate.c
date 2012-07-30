@@ -80,9 +80,9 @@ void evaluate(struct Value *exp, struct Value *env, struct Value **out)
               exp = c->body;
               goto eval_top;
             }
-          case EXTERNAL:
+          case INTRINSIC:
             {
-              ((struct External*)operator->value)->implementation
+              ((struct Intrinsic*)operator->value)->implementation
                 (((struct Pair*)exp->value)->cdr, env, out);
               return;
             }

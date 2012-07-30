@@ -3,9 +3,9 @@ CFLAGS += -ansi -pedantic -Werror -Wall -Wextra -O1
 all: sage
 
 sage: sage.o nil.o pair.o generic.o parse.o symbol.o evaluate.o enviroment.o \
-boolean.o value.o closure.o external.o builtin.o integer.o character.o
+boolean.o value.o closure.o intrinsic.o builtin.o integer.o character.o
 	$(CC) $(LDFLAGS) -o sage sage.o nil.o pair.o generic.o parse.o \
-symbol.o evaluate.o enviroment.o boolean.o value.o closure.o external.o \
+symbol.o evaluate.o enviroment.o boolean.o value.o closure.o intrinsic.o \
 builtin.o integer.o character.o
 
 sage.o: sage.c value.h generic.h
@@ -41,8 +41,8 @@ value.o: value.c value.h
 closure.o: closure.c closure.h value.h
 	$(CC) $(CFLAGS) -c -o closure.o closure.c
 
-external.o: external.c external.h value.h
-	$(CC) $(CFLAGS) -c -o external.o external.c
+intrinsic.o: intrinsic.c intrinsic.h value.h
+	$(CC) $(CFLAGS) -c -o intrinsic.o intrinsic.c
 
 builtin.o: builtin.c builtin.h value.h
 	$(CC) $(CFLAGS) -c -o builtin.o builtin.c
@@ -66,7 +66,7 @@ clean:
 	rm -f boolean.o
 	rm -f value.o
 	rm -f closure.o
-	rm -f external.o
+	rm -f intrinsic.o
 	rm -f builtin.o
 	rm -f integer.o
 	rm -f character.o

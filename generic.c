@@ -22,8 +22,8 @@ void print_value(struct Value *v)
     case CLOSURE:
       print_closure((struct Closure*) v->value);
       return;
-    case EXTERNAL:
-      print_external();
+    case INTRINSIC:
+      print_intrinsic();
       return;
     case INTEGER:
       print_integer((int*) v->value);
@@ -60,9 +60,9 @@ struct Value *equal(struct Value *a, struct Value *b)
     case CLOSURE:
       return equal_closure((struct Closure*) a->value,
                            (struct Closure*) b->value);
-    case EXTERNAL:
-      return equal_external((struct External*) a->value,
-                            (struct External*) b->value);
+    case INTRINSIC:
+      return equal_intrinsic((struct Intrinsic*) a->value,
+                            (struct Intrinsic*) b->value);
     case INTEGER:
       return equal_integer((int*) a->value, (int*) b->value);
     case CHARACTER:
@@ -91,8 +91,8 @@ void collect(struct Value *v)
     case CLOSURE:
       free_closure((struct Closure*) v->value);
       break;
-    case EXTERNAL:
-      free_external((struct External*) v->value);
+    case INTRINSIC:
+      free_intrinsic((struct Intrinsic*) v->value);
       break;
     case INTEGER:
       free_integer((int*) v->value);
