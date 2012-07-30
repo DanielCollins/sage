@@ -12,6 +12,7 @@
 #include "external.h"
 #include "builtin.h"
 #include "integer.h"
+#include "character.h"
 
 enum Type
 {
@@ -22,7 +23,8 @@ enum Type
   BOOLEAN,
   CLOSURE,
   EXTERNAL,
-  INTEGER  
+  INTEGER,
+  CHARACTER  
 };
 
 struct Value

@@ -84,7 +84,7 @@ struct Value *parse_symbol(FILE *s)
   int c, l, i, t;
   i = l = 0;
   name = 0;
-  while ((c = fgetc(s)) != EOF && !isspace(c) && c != '(' && c != ')')
+  while ((c = fgetc(s)) != EOF && !isspace(c) && c != '(' && c != ')' && c != '\'')
   {
     if (!l)
     {
@@ -133,9 +133,30 @@ struct Value *parse_boolean(FILE *s)
   else
   {
     ungetc(c, s);
+    ungetc('#', s);
+    return 0;
+  }
+}
+
+struct Value *parse_character(FILE *s)
+{
+  int c;
+  int v;
+  c = fgetc(s);
+  if (c != '\'')
+  {
     ungetc(c, s);
     return 0;
   }
+  v = fgetc(s);
+  c = fgetc(s);
+  if (c != '\'')
+  {
+    ungetc(c, s);
+    ungetc(v, s);
+    return 0;
+  }
+  return character(v);
 }
 
 struct Value *parse_integer(FILE *s)
@@ -196,6 +217,8 @@ struct Value *parse_atom(FILE *s)
   if ((result = parse_boolean(s)))
     return result;
   if ((result = parse_integer(s)))
+    return result;
+  if ((result = parse_character(s)))
     return result;
   result = parse_symbol(s);
   return result;
