@@ -27,5 +27,12 @@ struct Value *resolve(struct Value *name, struct Value *env);
 struct Value *equal_enviroment(struct Enviroment *a, struct Enviroment *b);
 void free_enviroment(struct Enviroment *e);
 
+void builtin_bind(struct Value *argument, struct Value *env,
+  struct Value **out);
+void builtin_extend(struct Value *argument, struct Value *env,
+  struct Value **out);
+void builtin_env(struct Value *argument, struct Value *env, struct Value **out);
+void builtin_set(struct Value *argument, struct Value *env, struct Value **out);
+
 #endif
 

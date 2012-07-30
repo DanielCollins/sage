@@ -37,3 +37,15 @@ void free_closure(struct Closure *c)
   deallocate(c, sizeof(struct Closure));
 }
 
+void builtin_lambda(struct Value *argument, struct Value *env,
+ struct Value **out)
+{
+  struct Value *arg, *body;
+  arg = ((struct Pair*)argument->value)->car;
+  body = ((struct Pair*)argument->value)->cdr;
+  if (body->type != PAIR)
+    return;
+  body = ((struct Pair*)body->value)->car;
+  *out = closure(arg, body, env);
+}
+

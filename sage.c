@@ -51,6 +51,14 @@ void psage_snuff(void)
   exit(EXIT_SUCCESS);
 }
 
+void builtin_exit(struct Value *argument, struct Value *env, struct Value **out)
+{
+  (void) argument;
+  (void) env;
+  (void) out;
+  psage_snuff();
+}
+
 int main(int argc, char *argv[])
 {
   struct Value *out;

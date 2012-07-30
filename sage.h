@@ -15,5 +15,8 @@ struct Value *toplevel;
 void psage_init(void);
 void psage_snuff(void);
 
+void builtin_exit(struct Value *argument, struct Value *env,
+  struct Value **out);
+
 #endif
 

@@ -49,3 +49,19 @@ void ref_dec(struct Value *v)
     collect(v);
 }
 
+void builtin_quote(struct Value *argument, struct Value *env,
+   struct Value **out)
+{
+  (void) env;
+  *out = ((struct Pair*)argument->value)->car;
+}
+
+void builtin_allocation(struct Value *argument, struct Value *env,
+  struct Value **out)
+{
+  (void) argument;
+  (void) env;
+  *out = make_integer(memory_used);
+}
+
+

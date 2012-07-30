@@ -137,3 +137,36 @@ void free_enviroment(struct Enviroment *e)
   deallocate(e, sizeof(struct Enviroment));
 }
 
+void builtin_extend(struct Value *argument, struct Value *env,
+  struct Value **out)
+{
+  struct Value *name, *value;
+  name = ((struct Pair*)argument->value)->car;
+  value = ((struct Pair*)argument->value)->cdr;
+  if (value->type != PAIR)
+    return;
+  value = ((struct Pair*)value->value)->car;
+  evaluate(value, env, &value);
+  extend(name, value, env);
+  *out = value;
+}
+
+void builtin_set(struct Value *argument, struct Value *env, struct Value **out)
+{
+  struct Value *name, *value;
+  name = ((struct Pair*)argument->value)->car;
+  value = ((struct Pair*)argument->value)->cdr;
+  if (value->type != PAIR)
+    return;
+  value = ((struct Pair*)value->value)->car;
+  evaluate(value, env, &value);
+  bind(name, value, env);
+  *out = value;
+}
+
+void builtin_env(struct Value *argument, struct Value *env, struct Value **out)
+{
+  (void) argument;
+  *out = env;
+}
+

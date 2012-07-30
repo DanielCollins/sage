@@ -10,9 +10,9 @@
 #include "boolean.h"
 #include "closure.h"
 #include "intrinsic.h"
-#include "builtin.h"
 #include "integer.h"
 #include "character.h"
+#include "evaluate.h"
 
 enum Type
 {
@@ -45,6 +45,11 @@ void ref_dec(struct Value *v);
 
 struct Value *make_value(enum Type type, void *value);
 void free_value(struct Value *v);
+
+void builtin_quote(struct Value *argument, struct Value *env,
+  struct Value **out);
+void builtin_allocation(struct Value *argument, struct Value *env,
+  struct Value **out);
 
 #endif
 

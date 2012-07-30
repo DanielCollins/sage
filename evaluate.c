@@ -109,3 +109,20 @@ void evaluate(struct Value *exp, struct Value *env, struct Value **out)
   }
 }
 
+void builtin_eval(struct Value *argument, struct Value *env,
+  struct Value **out)
+{
+  struct Value *exp, *e;
+  exp = ((struct Pair*)argument->value)->car;
+  e = ((struct Pair*)argument->value)->cdr;
+  if (e->type == PAIR)
+  {
+    e = ((struct Pair*)e->value)->car;
+    evaluate(e, env, out);
+  }
+  else
+  {
+    e = env;
+    evaluate(exp, e, out);
+  }
+}

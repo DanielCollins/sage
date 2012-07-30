@@ -15,5 +15,8 @@ void print_closure();
 struct Value *equal_closure(struct Closure *a, struct Closure *b);
 void free_closure(struct Closure *c);
 
+void builtin_lambda(struct Value *argument, struct Value *env,
+  struct Value **out);
+
 #endif
 
